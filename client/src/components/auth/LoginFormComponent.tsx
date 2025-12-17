@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import TextInput from '../single/TextInput'
-import { useLogin } from '../../../reusableHooks/useLogin';
+import { useState } from 'react'
+import TextInput from '../ui/single/TextInput'
+import { useLogin } from '../../reusableHooks/useLogin';
 
-const LoginForm = () => {
+const LoginFormComponent = () => {
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, unError, pwError } = useLogin();
+  const { login, unError, pwError, logging } = useLogin();
 
   return (
     <div className='w-full items-center justify-center flex mt-20'>
@@ -18,11 +18,17 @@ const LoginForm = () => {
         <div className='flex justify-end'>
           <button className="btn mt-5 btn-primary text-black" onClick={() => {
             login(userName, password)
-          }}>Login</button>
+          }}>
+            {
+              logging &&
+              <span className="loading loading-spinner"></span>
+            }
+            Login
+          </button>
         </div>
       </div>
     </div>
   )
 }
 
-export default LoginForm
+export default LoginFormComponent

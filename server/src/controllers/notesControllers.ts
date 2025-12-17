@@ -1,5 +1,5 @@
 import { response } from "express"
-import Note from "../../models/Note.ts"
+import Note from "../models/Note.ts"
 
 export async function getAllNotes(req, res) {
   try {

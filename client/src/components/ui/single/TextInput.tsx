@@ -1,4 +1,5 @@
 import React from 'react'
+import Typography from './Typography'
 
 type Props = {
   title: string,
@@ -13,8 +14,8 @@ type Props = {
 const TextInput = ({ mt = 0, ...p }: Props) => {
   return (
     <fieldset className={`fieldset mt-${mt}`}>
-      <legend className="fieldset-legend">{p.title}</legend>
-      <input type={p.type} className="input mt-1" placeholder={p.placeHolder} value={p.text} onChange={(e) => p.setText(e.target.value)} />
+      <Typography type='h3'>{p.title}</Typography>
+      <input type={p.type} className="input mt-1 w-full" placeholder={p.placeHolder} value={p.text} onChange={(e) => p.setText(e.target.value)} />
       {
         p.error &&
         <p className="label text-red-400">{p.error}</p>

@@ -5,5 +5,4 @@
 @plugin "daisyui/theme" {
     name:dark;
     default: true;
-  --color-primary: #e3f0ff;
 }
