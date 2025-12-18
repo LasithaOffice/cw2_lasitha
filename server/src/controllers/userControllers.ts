@@ -6,9 +6,9 @@ export async function getAllUsers(req, res) {
     const { userType } = req.query;
     let users = undefined;
     if (userType == 'All') {
-      users = await User.find()
+      users = await User.find().populate('speciality')
     } else {
-      users = await User.find({ userType })
+      users = await User.find({ userType }).populate('speciality')
     }
     if (!users) {
       res.status(400).json({
@@ -33,15 +33,16 @@ export async function getAllUsers(req, res) {
 
 export async function createUser(req, res) {
   try {
-    const { userName, password, name, img, userType, speciality } = req.body;
+    const { userName, password, name, img, userType, specialityId } = req.body;
     const password_ = await bcrypt.hash(password, 10);
+    console.log("speee 1", specialityId)
     const newUser = new User({
       userName,
       password: password_,
       name,
       img,
       userType,
-      speciality
+      speciality: specialityId
     })
     await newUser.save()
     res.status(201).json({ message: "User Account is created" })

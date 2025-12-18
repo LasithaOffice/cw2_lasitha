@@ -11,8 +11,10 @@ export const useCreateUser = () => {
 
   const create = useCallback(async (fullName: string, userName: string, password: string,
     userType: UserTypes, speciality?: Speciality, iFile?: any) => {
+    console.log("speee 1", speciality)
     if (!(fullName && userName && password && userType && iFile)) {
       toast.error("Please provide all the details!")
+      console.log(fullName + " " + userName + " " + password + " " + userType + " " + iFile);
       return false;
     }
     else {
@@ -28,7 +30,7 @@ export const useCreateUser = () => {
             name: fullName,
             img: f.data,
             userType: userType,
-            speciality
+            specialityId: speciality?._id
           });
           setLoading(0);
           toast.success(s.message)

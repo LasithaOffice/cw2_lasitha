@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { allSpecialities, userTypes } from "../types/User.ts";
 
 const userSchema = new mongoose.Schema({
@@ -24,10 +24,9 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   speciality: {
-    type: String,
-    enum: allSpecialities,
-    default: 'Staff',
-    required: true
+    type: Types.ObjectId,
+    ref: "Speciality",
+    required: false,
   },
   isActive: {
     type: Boolean,

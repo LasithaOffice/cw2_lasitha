@@ -1,5 +1,5 @@
 export type ChannelStatus = "Payment Pending" | "Paid" | "Completed"
-export type ScanStatus = "Not Required" | "Scan Pending" | "Scan Completed"
+export type ScanStatus = "Not Required" | "Required"
 
 export const allChannelStatus: ChannelStatus[] = [
   "Payment Pending",
@@ -9,6 +9,5 @@ export const allChannelStatus: ChannelStatus[] = [
 
 export const allScanStatus: ScanStatus[] = [
   "Not Required",
-  "Scan Pending",
-  "Scan Completed",
+  "Required",
 ]

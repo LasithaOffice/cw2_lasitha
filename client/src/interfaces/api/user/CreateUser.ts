@@ -1,5 +1,4 @@
 import type { UserTypes } from "../../../types/User";
-import type { Speciality } from "../../Speciality";
 
 export interface CreateUserRequest {
   userName: string,
@@ -7,7 +6,7 @@ export interface CreateUserRequest {
   name: string,
   img: string,
   userType: UserTypes,
-  speciality?: Speciality,
+  specialityId?: string,
 }
 
 // export interface CreateUserResponse extends CommonResponse {

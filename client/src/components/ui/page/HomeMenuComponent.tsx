@@ -30,6 +30,12 @@ const HomeMenuComponent = () => {
           <MenuButton title={"Manage Payments"} />
         </div>
       }
+      {
+        user?.userType == 'doctor' &&
+        <div className="px-5 flex flex-col">
+          <MenuButton title={"Manage Channels"} />
+        </div>
+      }
     </div>
   )
 }

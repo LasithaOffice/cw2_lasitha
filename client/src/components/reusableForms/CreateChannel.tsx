@@ -9,6 +9,8 @@ import Typography from '../ui/single/Typography';
 import moment from "moment";
 import { createChannel, getLastChannelId } from '../../api/channel';
 import toast from 'react-hot-toast';
+import PatientBox from './PatientBox';
+import DoctorBox from './DoctorBox';
 
 const CreateChannel = () => {
 
@@ -43,7 +45,7 @@ const CreateChannel = () => {
     setCreating(true);
     createChannel({
       patientId: patient?._id + "",
-      doctor_id: doctor?._id + "",
+      doctorId: doctor?._id + "",
       dateTime: dateTime,
       channelNo: channelId
     }).then(d => {
@@ -65,27 +67,14 @@ const CreateChannel = () => {
     <div className='flex justify-center'>
       <div className='w-9/12'>
         <div className='border-2 rounded-2xl border-white flex justify-center items-center p-2 flex-col'>
-          <Typography type='h2'>{'Channel No : ' + ((channelId) ? "CH-" + channelId : "Fetching...")}</Typography>
+          <Typography type='h2'>{'Channel No : ' + ((channelId) ? "C" + channelId : "Fetching...")}</Typography>
         </div>
         {
           channelId &&
           <div className='border-2 rounded-2xl border-white flex justify-center items-center p-2 flex-col mt-5'>
             {
               patient &&
-              <div className='flex flex-col w-full'>
-                <div className='flex'>
-                  <img
-                    src={patient.img}
-                    alt="preview"
-                    className="w-20 h-20 border-r-2 border-2 border-white object-cover mb-2"
-                  />
-                </div>
-                <div className='flex'><div className='flex flex-1'>Patient ID :</div><div className='flex flex-1'>{patient.patientId}</div></div>
-                <div className='flex'> <div className='flex flex-1'>Patient Name :</div><div className='flex flex-1'>{patient.name}</div></div>
-                <div className='flex'><div className='flex flex-1'>Patient Gender :</div><div className='flex flex-1'>{patient.gender}</div></div>
-                <div className='flex'><div className='flex flex-1'>Patient Age :</div><div className='flex flex-1'>{moment().diff(moment(patient.bDay), "years") + " Yrs"}</div></div>
-                <div className='flex'><div className='flex flex-1'>Patient Contact :</div><div className='flex flex-1'>{patient.tele}</div></div>
-              </div>
+              <PatientBox patient={patient} />
             }
             <Button text={(patient) ? 'Change Patient' : 'Select Patient'} mt={patient ? 2 : 0} onClick={() => {
               const doc: any = document.getElementById('patient_model');
@@ -114,15 +103,7 @@ const CreateChannel = () => {
           <div className='border-2 rounded-2xl border-white flex justify-center items-center p-2 flex-col mt-5'>
             {
               doctor &&
-              <div className='flex flex-col w-full'>
-                <img
-                  src={doctor.img}
-                  alt="preview"
-                  className="w-20 h-20 border-r-2 border-2 border-white object-cover mb-2"
-                />
-                <div className='flex'><div className='flex flex-1'>Doctor Name :</div><div className='flex flex-1'>{doctor.name}</div></div>
-                <div className='flex'> <div className='flex flex-1'>Speciality :</div><div className='flex flex-1'>{doctor.speciality.name}</div></div>
-              </div>
+              <DoctorBox doctor={doctor} />
             }
             <Button text={(doctor) ? 'Change Doctor' : 'Select Doctor'} mt={doctor ? 2 : 0} onClick={() => {
               const doc: any = document.getElementById('doctor_model');

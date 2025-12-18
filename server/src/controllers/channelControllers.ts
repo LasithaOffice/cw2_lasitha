@@ -4,12 +4,12 @@ import User from "../models/User.ts";
 
 export async function createChannel(req, res) {
   try {
-    const { patientId, doctor_id, dateTime, channelNo } = req.body;
+    const { patientId, doctorId, dateTime, channelNo } = req.body;
     // const count = await Channel.countDocuments();
     const newChannel = new Channel({
       channelNo,
       patient: patientId,
-      doctor: doctor_id,
+      doctor: doctorId,
       dateTime
     })
     await newChannel.save()
@@ -68,7 +68,12 @@ export async function getAllChannel(req, res) {
   try {
     const channels = await Channel.find(filter)
       .populate("patient")
-      .populate("doctor")
+      .populate({
+        path: 'doctor',
+        populate: {
+          path: "speciality"
+        }
+      })
       .sort({ dateTime: 1 });
     res.status(200).json({
       message: "Channel fetched successfully",
@@ -76,6 +81,26 @@ export async function getAllChannel(req, res) {
     })
   } catch (error) {
     console.log("Error fetching Channels", error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error
+    })
+  }
+}
+
+export async function updateChannel(req, res) {
+  try {
+    const { diagnosis, prescriptions, condition, id, scanRequestId, channelStatus, scanStatus } = req.body;
+    const ch = await Channel.findById(id);
+    if (diagnosis) ch.diagnosis = diagnosis;
+    if (prescriptions) ch.prescriptions = prescriptions;
+    if (condition) ch.condition = condition;
+    if (scanRequestId) ch.scanRequest = scanRequestId;
+    if (channelStatus) ch.channelStatus = channelStatus;
+    if (scanStatus) ch.scanStatus = scanStatus;
+    ch.save();
+    res.status(200).json({ message: "Channel is updated" })
+  } catch (error) {
     res.status(500).json({
       message: "Internal server error",
       error: error

@@ -8,6 +8,8 @@ import userRoute from './routes/userRoutes.ts';
 import patientRoute from './routes/patientRoutes.ts';
 import channelRoute from './routes/channelRoutes.ts';
 import systemDataRoute from './routes/systemDataRoutes.ts';
+import paymentRoute from './routes/paymentRoutes.ts';
+import scanRoute from './routes/scanRoutes.ts';
 
 dotenv.config();
 
@@ -32,6 +34,8 @@ app.use("/api/user", userRoute);
 app.use("/api/patient", patientRoute);
 app.use("/api/channel", channelRoute);
 app.use("/api/data", systemDataRoute);
+app.use("/api/payment", paymentRoute);
+app.use("/api/scan", scanRoute);
 
 connectDB().then(() => {
   app.listen(PORT, () => {

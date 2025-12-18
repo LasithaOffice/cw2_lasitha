@@ -15,7 +15,6 @@ export async function signin(req, res) {
     }
     const userObj = user.toObject();
     delete userObj.password
-    delete userObj._id
     delete userObj.__v
     delete userObj.createdAt
     delete userObj.updatedAt

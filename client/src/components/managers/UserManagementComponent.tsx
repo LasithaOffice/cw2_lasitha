@@ -20,7 +20,7 @@ const UserManagementComponent = () => {
   const [img, setImg] = useState("");
   const [ifile, setIFile] = useState<any>();
   const [userType, setUserType] = useState<UserTypes>('admin');
-  const [speciality, setSpeciality] = useState<Speciality>();
+  const [speciality, setSpeciality] = useState<string>();
 
   const [specialities, setSpecialties] = useState<Speciality[]>([]);
 
@@ -41,6 +41,7 @@ const UserManagementComponent = () => {
       setName("");
       setPassword("");
       setUserName("");
+      setImg("");
       setIFile(undefined);
       setUserType('admin')
       setSpeciality(undefined)
@@ -52,11 +53,12 @@ const UserManagementComponent = () => {
       setName(currentUser.name);
       setUserType(currentUser.userType)
       setImg(currentUser.img);
-      setSpeciality(currentUser.speciality)
+      setSpeciality(currentUser.speciality?.name)
     } else {
       setName("");
       setPassword("");
       setUserName("");
+      setImg("");
       setIFile(undefined);
       setUserType('admin')
       setSpeciality(undefined)
@@ -79,11 +81,11 @@ const UserManagementComponent = () => {
   }, [currentUser])
 
   const createUser = useCallback(async () => {
-    const success = await create(name, userName, password, userType, speciality, ifile);
+    const success = await create(name, userName, password, userType, specialities.find(s => s.name == speciality), ifile);
     if (success) {
       setTriggerUserList(d => d + 1)
     }
-  }, [name, userName, password, userType, ifile])
+  }, [name, userName, password, userType, ifile, speciality, specialities])
 
   return (
     <div>
@@ -96,10 +98,10 @@ const UserManagementComponent = () => {
             setText={setUserName} />
           <TextInput title={'Password'} mt={2} placeHolder={'type the password'} type={'password'} text={password}
             setText={setPassword} />
-          <DropDown selected={userType} items={userTypes} title={'User Type'} setSelected={setUserType} />
+          <DropDown selected={userType} mt={2} items={userTypes} title={'User Type'} setSelected={setUserType} />
           {
             (userType == 'doctor') &&
-            <DropDown selected={speciality?.name} items={specialities.map(s => s.name)} title={'Speciality'} setSelected={setSpeciality} />
+            <DropDown selected={speciality} items={specialities.map(s => s.name)} title={'Speciality'} setSelected={setSpeciality} />
           }
           <ImageUploader setFile={(p) => {
             setIFile(p)

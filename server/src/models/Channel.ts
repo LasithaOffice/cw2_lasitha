@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose";
-import { allGenders } from "../types/Patient.ts";
+import { allConditions, allGenders } from "../types/Patient.ts";
 import { allChannelStatus, allScanStatus } from "../types/Channel.ts";
 
 const channelSchema = new mongoose.Schema({
@@ -34,6 +34,14 @@ const channelSchema = new mongoose.Schema({
     type: Types.ObjectId,
     ref: "ScanRequest",
     required: false,
+  },
+  diagnosis: String,
+  prescriptions: String,
+  condition: {
+    type: String,
+    enum: allConditions,
+    default: 'Undetermined',
+    required: true,
   },
   isActive: {
     type: Boolean,

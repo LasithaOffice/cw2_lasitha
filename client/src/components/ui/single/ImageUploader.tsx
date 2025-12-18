@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   setFile: (f: any) => void,
@@ -9,6 +9,12 @@ const ImageUploader = (p: Props) => {
 
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (p.img) {
+      setPreview(null);
+    }
+  }, [p.img])
 
   return (
     <div onClick={() => fileInputRef.current?.click()}>
@@ -35,7 +41,7 @@ const ImageUploader = (p: Props) => {
         className="mt-2"
         onChange={e => {
           const selected = e.target.files?.[0];
-          if (!selected) return;
+          if (!selected) { setPreview(null); return };
           p.setFile(selected);
           setPreview(URL.createObjectURL(selected));
         }}

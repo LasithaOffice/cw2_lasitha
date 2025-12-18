@@ -3,23 +3,22 @@ import Typography from '../ui/single/Typography'
 import Table from '../ui/single/Table'
 import DropDown from '../ui/single/DropDown'
 import { type User } from '../../interfaces/User'
-import type { Channel } from '../../interfaces/Channel'
-import { getAllChannels } from '../../api/channel'
 import { type ChannelStatus, type ScanStatus } from '../../types/Channel'
 import type { Patient } from '../../interfaces/Patient'
 import { useAppSelector } from '../../config/reduxStore'
 import { currentUser } from '../../redux/slices/authSlice'
-import moment from 'moment'
+import { getAllScans } from '../../api/scan'
+import type { ScanRequest } from '../../interfaces/ScanRequest'
 
 type Props = {
   reloadKey?: number,
-  setChannel?: (v: Channel) => void
+  setScanRequest?: (v: ScanRequest) => void
 }
 
-const ChannelList = (p: Props) => {
+const ScanRequestList = (p: Props) => {
 
   const [loading, setLoading] = useState(false);
-  const [channels, setChannels] = useState<Channel[]>([]);
+  const [sr, setSR] = useState<ScanRequest[]>([]);
 
   const user = useAppSelector(currentUser);
 
@@ -30,22 +29,18 @@ const ChannelList = (p: Props) => {
   const [channelStatus, setChannelStatus] = useState<ChannelStatus>();
   const [scanStatus, setScanStatus] = useState<ScanStatus>();
 
-  const geAllChannels_ = async () => {
+  const getAllScanRequests_ = async () => {
     setLoading(true);
-    const dt = await getAllChannels({
-      date,
-      doctorId: (user?.userType == 'doctor') ? user._id : doctor?._id,
-      patientId: patient?._id,
-      scanStatus,
-      channelStatus,
+    const dt = await getAllScans({
+      isPaid: (channelStatus == 'Paid')
     })
     console.log("channel.list", dt.data)
-    setChannels(dt.data)
+    setSR(dt.data)
     setLoading(false);
   }
 
   useEffect(() => {
-    geAllChannels_()
+    getAllScanRequests_()
   }, [date, doctor, patient, channelStatus, scanStatus, p.reloadKey])
 
   const [cStats, setCStats] = useState<ChannelStatus[] | string[]>([])
@@ -63,7 +58,7 @@ const ChannelList = (p: Props) => {
 
   return (
     <div>
-      <Typography type='h2' mt={5}>{'Channel List'}</Typography>
+      <Typography type='h2' mt={5}>{'Scan Request List'}</Typography>
       <div className='flex flex-row items-center pt-4'>
         {
           (cStats.length > 0) &&
@@ -84,9 +79,9 @@ const ChannelList = (p: Props) => {
           }
         </div>
       </div>
-      <Table setValue={p.setChannel} mt={5} columns={["Channel No", "Patient", "Doctor", "Channel Status", "Date & time", "Scan Status"]} data={channels.map(d => [d.channelNo, d.patient.name, d.doctor.name, d.channelStatus, moment(d.dateTime).format("YYYY-MM-DD -- hh:mm a"), d.scanStatus])} allData={channels} />
+      <Table setValue={p.setScanRequest} mt={5} columns={["Scan", "Channel NO", "Patient", "Requested By", "Status"]} data={sr.map(d => [d.type.name + " - " + d.diseas.name, d.channel.channelNo, d.channel.patient.name, d.channel.doctor.name, (d.isPaid) ? 'Paid' : 'Payment pending'])} allData={sr} />
     </div>
   )
 }
 
-export default ChannelList
+export default ScanRequestList
