@@ -1,4 +1,3 @@
-import type { CommonResponse } from "./Common"
 
 export interface UploadRequest {
   file: any

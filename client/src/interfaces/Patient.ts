@@ -1,4 +1,4 @@
-import type { Conditions, Genders } from "../types/Patient";
+import type { Genders } from "../types/Patient";
 
 export interface Patient {
   _id: string,

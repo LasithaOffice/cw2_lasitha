@@ -9,6 +9,7 @@ import { useAppSelector } from '../../config/reduxStore'
 import { currentUser } from '../../redux/slices/authSlice'
 import { getAllScans } from '../../api/scan'
 import type { ScanRequest } from '../../interfaces/ScanRequest'
+import ScanViewer from '../reusableForms/ScanViewer'
 
 type Props = {
   reloadKey?: number,
@@ -21,12 +22,14 @@ const ScanRequestList = (p: Props) => {
   const [sr, setSR] = useState<ScanRequest[]>([]);
 
   const user = useAppSelector(currentUser);
+  const [scanR, setScanR] = useState<ScanRequest>();
+  const [trigger, setTrigger] = useState(0);
 
   //Filters
-  const [date, setDate] = useState<string>();
-  const [doctor, setDoctor] = useState<User>();
-  const [patient, setPatient] = useState<Patient>();
-  const [channelStatus, setChannelStatus] = useState<ChannelStatus>();
+  const [date] = useState<string>();
+  const [doctor] = useState<User>();
+  const [patient] = useState<Patient>();
+  const [channelStatus, setChannelStatus] = useState<ChannelStatus>(user?.userType == 'radiologist' ? 'Paid' : 'Payment Pending');
   const [scanStatus, setScanStatus] = useState<ScanStatus>();
 
   const getAllScanRequests_ = async () => {
@@ -41,16 +44,18 @@ const ScanRequestList = (p: Props) => {
 
   useEffect(() => {
     getAllScanRequests_()
-  }, [date, doctor, patient, channelStatus, scanStatus, p.reloadKey])
+  }, [date, doctor, patient, channelStatus, scanStatus, p.reloadKey, trigger])
 
   const [cStats, setCStats] = useState<ChannelStatus[] | string[]>([])
-  const [sStats, setSStats] = useState<ScanStatus[] | string[]>([])
+  const [sStats] = useState<ScanStatus[] | string[]>([])
 
   useEffect(() => {
     if (user?.userType == 'accountant') {
       setCStats(['Payment Pending', 'Paid'])
     } else if (user?.userType == 'doctor') {
       setCStats(['Paid', 'Completed'])
+    } else if (user?.userType == 'radiologist') {
+      setCStats([])
     } else {
       setCStats(['Payment Pending', 'Paid', 'All'])
     }
@@ -79,7 +84,9 @@ const ScanRequestList = (p: Props) => {
           }
         </div>
       </div>
-      <Table setValue={p.setScanRequest} mt={5} columns={["Scan", "Channel NO", "Patient", "Requested By", "Status"]} data={sr.map(d => [d.type.name + " - " + d.diseas.name, d.channel.channelNo, d.channel.patient.name, d.channel.doctor.name, (d.isPaid) ? 'Paid' : 'Payment pending'])} allData={sr} />
+      <Table setValue={p.setScanRequest ? p.setScanRequest : setScanR} mt={5} columns={["Scan", "Channel NO", "Patient", "Requested By", "Status"]} data={sr.map(d => [d.type.name + " - " + d.diseas.name, d.channel.channelNo, d.channel.patient.name, d.channel.doctor.name, ((d.isCompleted) ? 'Complete' : 'In complete') + " - " + ((d.isPaid) ? 'Paid' : 'Payment pending')])} allData={sr} />
+      <Typography mt={5} type='h2'>{"Total : " + sr.reduce((tot, c) => tot + (c.type.price + c.diseas.price), 0) + " LKR"}</Typography>
+      <ScanViewer setScanReq={setScanR} scanReq={scanR} setCTrigger={setTrigger} />
     </div>
   )
 }

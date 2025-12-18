@@ -3,6 +3,8 @@ import PatientManagementComponent from '../components/managers/PatientManagement
 import PaymentManagementComponent from '../components/managers/PaymentManagementComponent copy'
 import PriceManagementComponent from '../components/managers/PriceManagementComponent'
 import UserManagementComponent from '../components/managers/UserManagementComponent'
+import RevenueAndReport from '../components/reusableForms/RevenueAndReport'
+import ScanRequestList from '../components/reusableLists/ScanRequestList'
 import HomeMenuComponent from '../components/ui/page/HomeMenuComponent'
 import NavBar from '../components/ui/page/NavBar'
 import { useAppSelector } from '../config/reduxStore'
@@ -34,7 +36,13 @@ const HomePage = () => {
                     section == 'Manage Pricing' ?
                       <PriceManagementComponent />
                       :
-                      <></>
+                      section == 'Manage ScanRequests' ?
+                        <ScanRequestList />
+                        :
+                        section == 'Revenue & Report' ?
+                          <RevenueAndReport />
+                          :
+                          <></>
           }
         </div>
       </div>

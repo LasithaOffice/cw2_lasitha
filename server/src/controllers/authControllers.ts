@@ -4,12 +4,20 @@ import bcrypt from "bcrypt";
 export async function signin(req, res) {
   try {
     const { userName, password } = req.body;
+    console.log(userName, password)
     const user = await User.findOne({
       userName: userName
     });
+    console.log("user", user)
     if (!user) {
       res.status(401).json({
         message: "User does not exist"
+      })
+      return;
+    }
+    if (!user.isActive) {
+      res.status(403).json({
+        message: "User account is disabled"
       })
       return;
     }
@@ -32,7 +40,6 @@ export async function signin(req, res) {
       })
     }
   } catch (error) {
-    console.log("Error getting notes", error);
     res.status(500).json({
       message: "Internal server error",
       success: false,

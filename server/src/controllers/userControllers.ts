@@ -22,7 +22,6 @@ export async function getAllUsers(req, res) {
       success: true
     })
   } catch (error) {
-    console.log("Error getting notes", error);
     res.status(500).json({
       message: "Internal server error",
       success: false,
@@ -47,7 +46,6 @@ export async function createUser(req, res) {
     await newUser.save()
     res.status(201).json({ message: "User Account is created" })
   } catch (error) {
-    console.log("Error getting notes", error);
     res.status(500).json({
       message: "Internal server error",
       error: error

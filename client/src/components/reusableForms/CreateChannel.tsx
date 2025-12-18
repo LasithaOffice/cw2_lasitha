@@ -6,7 +6,6 @@ import DateTimeInput from '../ui/single/DateTimeInput';
 import type { User } from '../../interfaces/User';
 import UserList from '../reusableLists/UserList';
 import Typography from '../ui/single/Typography';
-import moment from "moment";
 import { createChannel, getLastChannelId } from '../../api/channel';
 import toast from 'react-hot-toast';
 import PatientBox from './PatientBox';

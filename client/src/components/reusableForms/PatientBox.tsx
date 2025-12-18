@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Patient } from '../../interfaces/Patient'
 import moment from 'moment'
 

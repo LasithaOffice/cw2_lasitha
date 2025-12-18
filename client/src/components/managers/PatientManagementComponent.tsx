@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import TextInput from '../ui/single/TextInput'
 import DropDown from '../ui/single/DropDown'
-import { userTypes, type UserTypes } from '../../types/User'
 import ImageUploader from '../ui/single/ImageUploader'
 import Button from '../ui/single/Button'
-import UserList from '../reusableLists/UserList'
 import { enableOrDisableUser } from '../../api/user'
 import toast from 'react-hot-toast'
 import { useCreatePatient } from '../../reusableHooks/useCreatePatient'
@@ -12,6 +10,9 @@ import { allGenders } from '../../types/Patient'
 import DateTimeInput from '../ui/single/DateTimeInput'
 import PatientList from '../reusableLists/PatientList'
 import type { Patient } from '../../interfaces/Patient'
+import ChannelList from '../reusableLists/ChannelList'
+import ScanRequestList from '../reusableLists/ScanRequestList'
+import { showHideModel } from '../../utils/modelFunc'
 
 const PatientManagementComponent = () => {
 
@@ -98,12 +99,17 @@ const PatientManagementComponent = () => {
           }} img={img} />
           {
             (currentPatient) ?
-              <div className='flex'>
-                <Button type={currentPatient.isActive ? 'cancel' : undefined}
-                  text={currentPatient.isActive ? 'Disable Account' : 'Enable Account'}
-                  mt={5} onClick={enableOrDisableUser_} loading={disabling} />
-                <div className='w-2'></div>
-                <Button type='nutral' text={'Cancel'} mt={5} onClick={() => { setCurrentPatient(undefined) }} />
+              <div className='flex flex-col'>
+                <div className='flex'>
+                  <Button type={currentPatient.isActive ? 'cancel' : undefined}
+                    text={currentPatient.isActive ? 'Disable Account' : 'Enable Account'}
+                    mt={5} onClick={enableOrDisableUser_} loading={disabling} />
+                  <div className='w-2'></div>
+                  <Button type='nutral' text={'Cancel'} mt={5} onClick={() => { setCurrentPatient(undefined) }} />
+                </div>
+                <div className='flex'>
+                  <Button type='nutral' text={'Channels'} mt={5} onClick={() => { showHideModel('channel_modal', true) }} />
+                </div>
               </div>
               :
               <Button text={'Create Patient'} mt={5} onClick={createPatient} loading={loading == 1} />
@@ -112,6 +118,24 @@ const PatientManagementComponent = () => {
         </div>
         <div className='flex flex-2 px-5 flex-col'>
           <PatientList reloadKey={triggerList} setPatient={setCurrentPatient} />
+          <dialog id="channel_modal" className="modal">
+            <div className="modal-box w-max min-w-max">
+              {/* <h3 className="font-bold text-lg">Patient</h3> */}
+              <ChannelList patient={currentPatient} />
+              <form method="dialog" className="modal-action">
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </dialog>
+          <dialog id="scan_modal" className="modal">
+            <div className="modal-box w-max min-w-max">
+              {/* <h3 className="font-bold text-lg">Patient</h3> */}
+              <ScanRequestList />
+              <form method="dialog" className="modal-action">
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>

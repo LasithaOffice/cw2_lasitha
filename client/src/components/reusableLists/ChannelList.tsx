@@ -13,7 +13,8 @@ import moment from 'moment'
 
 type Props = {
   reloadKey?: number,
-  setChannel?: (v: Channel) => void
+  setChannel?: (v: Channel) => void,
+  patient?: Patient
 }
 
 const ChannelList = (p: Props) => {
@@ -24,9 +25,8 @@ const ChannelList = (p: Props) => {
   const user = useAppSelector(currentUser);
 
   //Filters
-  const [date, setDate] = useState<string>();
-  const [doctor, setDoctor] = useState<User>();
-  const [patient, setPatient] = useState<Patient>();
+  const [date] = useState<string>();
+  const [doctor] = useState<User>();
   const [channelStatus, setChannelStatus] = useState<ChannelStatus>();
   const [scanStatus, setScanStatus] = useState<ScanStatus>();
 
@@ -35,7 +35,7 @@ const ChannelList = (p: Props) => {
     const dt = await getAllChannels({
       date,
       doctorId: (user?.userType == 'doctor') ? user._id : doctor?._id,
-      patientId: patient?._id,
+      patientId: (p.patient) ? p.patient._id : undefined,
       scanStatus,
       channelStatus,
     })
@@ -46,10 +46,10 @@ const ChannelList = (p: Props) => {
 
   useEffect(() => {
     geAllChannels_()
-  }, [date, doctor, patient, channelStatus, scanStatus, p.reloadKey])
+  }, [date, doctor, channelStatus, scanStatus, p.reloadKey, p.patient])
 
   const [cStats, setCStats] = useState<ChannelStatus[] | string[]>([])
-  const [sStats, setSStats] = useState<ScanStatus[] | string[]>([])
+  const [sStats] = useState<ScanStatus[] | string[]>([])
 
   useEffect(() => {
     if (user?.userType == 'accountant') {
@@ -63,7 +63,7 @@ const ChannelList = (p: Props) => {
 
   return (
     <div>
-      <Typography type='h2' mt={5}>{'Channel List'}</Typography>
+      <Typography type='h2' mt={5}>{(p.patient) ? 'Channels of ' + p.patient.name : ''}</Typography>
       <div className='flex flex-row items-center pt-4'>
         {
           (cStats.length > 0) &&
@@ -84,7 +84,8 @@ const ChannelList = (p: Props) => {
           }
         </div>
       </div>
-      <Table setValue={p.setChannel} mt={5} columns={["Channel No", "Patient", "Doctor", "Channel Status", "Date & time", "Scan Status"]} data={channels.map(d => [d.channelNo, d.patient.name, d.doctor.name, d.channelStatus, moment(d.dateTime).format("YYYY-MM-DD -- hh:mm a"), d.scanStatus])} allData={channels} />
+      <Table setValue={p.setChannel} mt={5} columns={["Channel No", "Patient", "Doctor", "Channel Status", "Date & time", "Cost"]} data={channels.map(d => [d.channelNo, d.patient.name, d.doctor.name, d.channelStatus, moment(d.dateTime).format("YYYY-MM-DD -- hh:mm a"), (d.doctor.speciality.price + " LKR")])} allData={channels} />
+      <Typography mt={5} type='h2'>{"Total : " + channels.reduce((tot, c) => tot + c.doctor.speciality.price, 0) + " LKR"}</Typography>
     </div>
   )
 }

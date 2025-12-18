@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getallDisease, getallScanType } from '../api/systemData'
 import type { Disease } from '../interfaces/Disease'
 import type { ScanType } from '../interfaces/ScanType'

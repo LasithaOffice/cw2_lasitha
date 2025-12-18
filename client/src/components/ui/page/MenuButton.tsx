@@ -24,6 +24,8 @@ const MenuButton = (p: Props) => {
       dispatch(setSection('Manage Payments'))
     } else if (user?.userType == 'doctor') {
       dispatch(setSection('Manage Channels'))
+    } else if (user?.userType == 'radiologist') {
+      dispatch(setSection('Manage ScanRequests'))
     }
   }, [user])
 

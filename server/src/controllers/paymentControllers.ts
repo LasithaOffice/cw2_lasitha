@@ -1,7 +1,5 @@
 import Channel from "../models/Channel.ts";
-import Patient from "../models/Patient.ts";
 import ScanRequest from "../models/ScanRequest.ts";
-import User from "../models/User.ts";
 
 export async function makeChannelPayment(req, res) {
   try {

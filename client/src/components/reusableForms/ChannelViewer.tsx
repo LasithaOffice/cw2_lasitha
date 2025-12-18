@@ -4,18 +4,15 @@ import Typography from '../ui/single/Typography';
 import toast from 'react-hot-toast';
 import PatientBox from './PatientBox';
 import { showHideModel } from '../../utils/modelFunc';
-import { makeChannelPayment } from '../../api/payment';
-import moment from 'moment';
 import type { Channel } from '../../interfaces/Channel';
 import DropDown from '../ui/single/DropDown';
 import { allConditions, type Conditions } from '../../types/Patient';
 import TextArea from '../ui/single/TextArea';
 import { updateChannel } from '../../api/channel';
 import useScansAndDiseases from '../../reusableHooks/useScansAndDiseases';
-import type { ScanType } from '../../interfaces/ScanType';
-import type { Disease } from '../../interfaces/Disease';
 import { createScanRequest, getAllScans } from '../../api/scan';
 import type { ScanRequest } from '../../interfaces/ScanRequest';
+import ScanImageList from '../reusableLists/ScanImageList';
 
 type Props = {
   channel?: Channel,
@@ -27,7 +24,6 @@ const ChannelViewer = ({ channel, setChanel, setCTrigger }: Props) => {
 
   const [processing, setProcessing] = useState(false)
   const [requesting, setReqesting] = useState(false)
-  const [rLoading, setRLoading] = useState(false)
 
   const [diagnosis, setDiagnosis] = useState<string>("")
   const [condition, setCondition] = useState<Conditions>("Undetermined")
@@ -55,6 +51,12 @@ const ChannelViewer = ({ channel, setChanel, setCTrigger }: Props) => {
 
   const createScanRequest_ = async () => {
     setReqesting(true);
+    if (channel?.scanStatus == 'Not Required') {
+      await updateChannel({
+        scanStatus: 'Required',
+        id: channel?._id + "",
+      })
+    }
     const dt = await createScanRequest({
       channelId: channel?._id + "",
       diseasId: diseases.find(d => d.name == disease)?._id + "",
@@ -82,18 +84,24 @@ const ChannelViewer = ({ channel, setChanel, setCTrigger }: Props) => {
   }, [channel])
 
   const loadChannelScans = async () => {
-    setRLoading(true);
     const reqs = await getAllScans({
       channelId: channel?._id
     })
     console.log("loadChannelScans", reqs)
     setScanRequests(reqs.data)
-    setRLoading(false);
   }
 
   useEffect(() => {
     loadChannelScans();
   }, [channel, trigger])
+
+  const [sr, setSr] = useState<ScanRequest>()
+
+  useEffect(() => {
+    if (sr) {
+      showHideModel('scan_images_model', true)
+    }
+  }, [sr])
 
   return (
     channel &&
@@ -127,7 +135,7 @@ const ChannelViewer = ({ channel, setChanel, setCTrigger }: Props) => {
                     <div className='ml-2' >
                       <Button text='View Scans' onClick={() => {
                         if (s.isCompleted) {
-
+                          setSr(s)
                         } else {
                           alert("Scan is not uploaded yet!")
                         }
@@ -150,6 +158,10 @@ const ChannelViewer = ({ channel, setChanel, setCTrigger }: Props) => {
           }}>Close</button>
         </form>
       </div>
+      {
+        sr &&
+        <ScanImageList sr={sr} />
+      }
     </dialog>
   )
 }

@@ -45,6 +45,7 @@ const PatientList = (p: Props) => {
           }
         </div>
       </div>
+      <Typography type='h3' mt={5}>{"Total : " + patients.length + " Patients"}</Typography>
       <Table setValue={p.setPatient} mt={5} columns={["Patient Id", "Name", "Gender", "Address", "Phone", "DOB", "Image"]} data={patients.map(d => [d.patientId, d.name, d.gender, d.address, d.tele, d.bDay, d.img])} allData={patients} />
     </div>
   )
