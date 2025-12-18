@@ -71,6 +71,15 @@ const ChannelViewer = ({ channel, setChanel, setCTrigger }: Props) => {
   const { diseases, scanTypes } = useScansAndDiseases();
 
   useEffect(() => {
+    if (scanTypes && diseases) {
+      if (scanTypes.length > 0 && diseases.length > 0) {
+        setScanType(scanTypes[0].name)
+        setDisease(diseases[0].name)
+      }
+    }
+  }, [diseases, scanTypes])
+
+  useEffect(() => {
     if (channel) {
       console.log("channnnn ", channel)
       setDiagnosis(channel.diagnosis)
