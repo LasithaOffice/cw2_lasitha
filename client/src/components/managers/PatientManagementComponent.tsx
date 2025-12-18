@@ -87,12 +87,12 @@ const PatientManagementComponent = () => {
         <div className='flex flex-1 flex-col'>
           <TextInput title={'Full Name'} mt={5} placeHolder={'type the name'} type={'text'} text={name}
             setText={setName} />
-          <DropDown selected={gender} items={allGenders} title={'Select the Gender'} setSelected={setGender} />
+          <DropDown selected={gender} mt={5} items={allGenders} title={'Select the Gender'} setSelected={setGender} />
           <TextInput title={'Address'} mt={5} placeHolder={'type the address'} type={'text'} text={address}
             setText={setAddress} />
           <TextInput title={'Telephone No.'} mt={5} placeHolder={'type the phone number'} type={'text'} text={tele}
             setText={setTele} />
-          <DateTimeInput title={'Birth Day'} type={'date'} text={bDay} setText={setBDay} />
+          <DateTimeInput mt={5} title={'Birth Day'} type={'date'} text={bDay} setText={setBDay} />
           <ImageUploader setFile={(p) => {
             setIFile(p)
           }} img={img} />

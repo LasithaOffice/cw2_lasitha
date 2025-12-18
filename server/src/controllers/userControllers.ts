@@ -1,7 +1,7 @@
 import User from "../models/User.ts";
 import bcrypt from "bcrypt";
 
-export async function loadUsers(req, res) {
+export async function getAllUsers(req, res) {
   try {
     const { userType } = req.query;
     let users = undefined;
@@ -18,7 +18,7 @@ export async function loadUsers(req, res) {
     }
     res.status(200).json({
       message: "Fetched successfully",
-      list: users,
+      data: users,
       success: true
     })
   } catch (error) {

@@ -1,11 +1,12 @@
 import express from 'express'
-import { toggleUserStatus, loadUsers, createUser } from '../controllers/userControllers.ts';
-import { createPatient, loadPatients } from '../controllers/patientControllers.ts';
+import { createChannel, getAllChannel, getLastChannelId } from '../controllers/channelControllers.ts';
 
 const channelRoute = express.Router();
 
-channelRoute.get("/", loadPatients)
-channelRoute.post("/", createPatient)
-channelRoute.patch("/:id/status", toggleUserStatus)
+channelRoute.get("/lastId", getLastChannelId)
+channelRoute.post("/", createChannel)
+channelRoute.get("/", getAllChannel)
+// channelRoute.post("/", createPatient)
+// channelRoute.patch("/:id/status", toggleUserStatus)
 
 export default channelRoute;

@@ -9,7 +9,7 @@ export interface Channel {
   patient: Patient,
   doctor: User,
   dateTime: string
-  status: ChannelStatus,
+  channelStatus: ChannelStatus,
   scanStatus: ScanStatus,
   scanRequest?: ScanRequest
   isActive: boolean

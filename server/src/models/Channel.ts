@@ -18,14 +18,16 @@ const channelSchema = new mongoose.Schema({
     required: true,
   },
   dateTime: String,
-  status: {
+  channelStatus: {
     type: String,
     enum: allChannelStatus,
+    default: 'Payment Pending',
     required: true,
   },
   scanStatus: {
     type: String,
     enum: allScanStatus,
+    default: 'Not Required',
     required: true,
   },
   scanRequest: {

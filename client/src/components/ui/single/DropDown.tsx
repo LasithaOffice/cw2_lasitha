@@ -19,23 +19,9 @@ const DropDown = (p: Props) => {
   };
 
   return (
-    // <details className={`dropdown w-full mt-${p.mt}`}>
-    //   <summary className="btn w-full">{p.selected ? p.selected : p.title}</summary>
-    //   <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-    //     {
-    //       p.items.map(d =>
-    //         <li key={d}><button onClick={() => {
-    //           p.setSelected(d);
-    //           handleClick();
-    //         }}>{d}</button></li>
-    //       )
-    //     }
-    //   </ul>
-
-    // </details>
-    <div className='mt-5 w-full'>
+    <div className={`w-full mt-${p.mt}`}>
       <Typography type='h3'>{p.title}</Typography>
-      <label className="select w-full mt-1">
+      <label className="select w-full mt-2">
         {/* <span className="label">{p.title}</span> */}
         <select>
           {

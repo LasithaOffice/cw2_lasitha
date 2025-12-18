@@ -14,5 +14,6 @@ export const allSpecialities: Specialities[] = [
   "Dermatologist",
   "Neurologist",
   "Oncologist",
-  "Psychiatrist"
+  "Psychiatrist",
+  "Staff"
 ]

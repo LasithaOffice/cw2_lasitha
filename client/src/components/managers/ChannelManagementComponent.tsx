@@ -1,6 +1,7 @@
 import { useState } from "react"
 import CreateChannel from "../reusableForms/CreateChannel"
 import BigButton from "../ui/single/BigButton"
+import ChannelList from "../reusableLists/ChannelList"
 
 const ChannelManagementComponent = () => {
 
@@ -18,12 +19,12 @@ const ChannelManagementComponent = () => {
             setSection("load")
           }} />
         </div>
-        <div className="flex-3 justify-center p-10 h-full">
+        <div className="flex-3 justify-center px-10 h-full">
           {
             (section == 'create') ?
               <CreateChannel />
               :
-              <CreateChannel />
+              <ChannelList />
           }
         </div>
       </div>

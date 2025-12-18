@@ -1,3 +1,4 @@
+import Typography from "./Typography"
 
 type Props = {
   columns: string[],
@@ -45,6 +46,12 @@ const Table = ({ columns, data, mt, setValue, allData }: Props) => {
           }
         </tbody>
       </table>
+      {
+        data.length == 0 &&
+        <div className="flex p-5 justify-center items-center w-full">
+          <Typography>No reocrds found</Typography>
+        </div>
+      }
     </div>
   )
 }

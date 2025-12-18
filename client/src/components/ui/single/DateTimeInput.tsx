@@ -13,7 +13,7 @@ const DateTimeInput = ({ mt = 0, ...p }: Props) => {
   return (
     <div className={`mt-${mt}`}>
       <Typography type='h3'>{p.title}</Typography>
-      <input value={p.text} type={p.type} className="input mt-1" onChange={(d) => {
+      <input value={p.text} type={p.type} className="input mt-2" onChange={(d) => {
         const value = d.target.value;
         p.setText(value)
         console.log(value)

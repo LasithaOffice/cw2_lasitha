@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
   speciality: {
     type: String,
     enum: allSpecialities,
+    default: 'Staff',
     required: true
   },
   isActive: {

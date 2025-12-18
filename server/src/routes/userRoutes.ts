@@ -1,9 +1,9 @@
 import express from 'express'
-import { toggleUserStatus, loadUsers, createUser } from '../controllers/userControllers.ts';
+import { toggleUserStatus, getAllUsers, createUser } from '../controllers/userControllers.ts';
 
 const userRoute = express.Router();
 
-userRoute.get("/", loadUsers)
+userRoute.get("/", getAllUsers)
 userRoute.post("/", createUser)
 userRoute.patch("/:id/status", toggleUserStatus)
 
