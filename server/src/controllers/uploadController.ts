@@ -21,7 +21,7 @@ export const uploadFile = async (req: Request, res: Response) => {
     });
     res.status(200).json({
       message: "Uploaded successfully",
-      url: (uploadResult as any).secure_url,
+      data: (uploadResult as any).secure_url,
       success: true
     });
   } catch (error) {

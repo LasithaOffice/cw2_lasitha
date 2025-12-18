@@ -8,7 +8,7 @@ const HomeMenuComponent = () => {
   const user = useAppSelector(currentUser);
 
   return (
-    <div className="flex flex-col bg-base-200 h-full">
+    <div className="flex flex-col bg-base-200 h-dvh">
       <UserDataComponent />
       {
         user?.userType == 'frontDesk' &&

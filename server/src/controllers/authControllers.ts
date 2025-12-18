@@ -23,7 +23,7 @@ export async function signin(req, res) {
     if (isMatch) {
       res.status(200).json({
         message: "Fetched successfully",
-        user: userObj,
+        data: userObj,
         success: true
       })
     } else {
@@ -37,28 +37,6 @@ export async function signin(req, res) {
     res.status(500).json({
       message: "Internal server error",
       success: false,
-      error: error
-    })
-  }
-}
-
-export async function createAccount(req, res) {
-  try {
-    const { userName, password, name, img, userType } = req.body;
-    const password_ = await bcrypt.hash(password, 10);
-    const newUser = new User({
-      userName,
-      password: password_,
-      name,
-      img,
-      userType
-    })
-    await newUser.save()
-    res.status(201).json({ message: "User Account is created" })
-  } catch (error) {
-    console.log("Error getting notes", error);
-    res.status(500).json({
-      message: "Internal server error",
       error: error
     })
   }

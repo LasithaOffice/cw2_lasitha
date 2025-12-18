@@ -1,16 +1,15 @@
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
-import { createUser } from '../api/auth';
-import type { UserTypes } from '../types/User';
 import { uploadImage } from '../api/file';
+import { createPatient } from '../api/patient';
 
-export const useCreateAccount = () => {
+export const useCreatePatient = () => {
 
   const [loading, setLoading] = useState(0);
 
-  const create = useCallback(async (fullName: string, userName: string, password: string, userType?: UserTypes, iFile?: any) => {
-    if (!(fullName && userName && password && userType && iFile)) {
-      toast.error("Please provide all the details!")
+  const create = useCallback(async (name: string, gender: string, address: string, tele: string, bDay: string, iFile?: any) => {
+    if (!(name && gender && address && tele && bDay && iFile)) {
+      toast.error("Please provide all the patient details!")
       return false;
     }
     else {
@@ -19,13 +18,15 @@ export const useCreateAccount = () => {
         const f = await uploadImage({
           file: iFile
         })
+        const img = f.data;
         try {
-          const s = await createUser({
-            userName: userName,
-            password: password,
-            name: fullName,
-            img: f.url,
-            userType: userType
+          const s = await createPatient({
+            name,
+            gender,
+            address,
+            tele,
+            bDay,
+            img,
           });
           setLoading(0);
           toast.success(s.message)

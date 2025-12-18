@@ -16,14 +16,14 @@ const ImageUploader = (p: Props) => {
         <img
           src={preview}
           alt="preview"
-          className="w-20 h-20 border-r-2 border-2 border-white mt-5"
+          className="w-20 h-20 border-r-2 border-2 border-white mt-5 object-cover"
         />
       )
         : p.img ?
           <img
             src={p.img}
             alt="preview"
-            className="w-20 h-20 border-r-2 border-2 border-white mt-5"
+            className="w-20 h-20 border-r-2 border-2 border-white mt-5 object-cover"
           />
           :
           <div className="w-20 h-20 border-r-2 border-2 border-white mt-5"></div>

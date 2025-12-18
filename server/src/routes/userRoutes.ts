@@ -1,11 +1,10 @@
 import express from 'express'
-import { createNote, deleteNote, getAllNotes, getNoteById, updateNote } from '../controllers/notesControllers.ts';
-import { createAccount, signin } from '../controllers/authControllers.ts';
-import { enableDisableUser, loadUsers } from '../controllers/userControllers.ts';
+import { toggleUserStatus, loadUsers, createUser } from '../controllers/userControllers.ts';
 
 const userRoute = express.Router();
 
-userRoute.post("/", loadUsers)
-userRoute.post("/enableOrDisable/:id", enableDisableUser)
+userRoute.get("/", loadUsers)
+userRoute.post("/", createUser)
+userRoute.patch("/:id/status", toggleUserStatus)
 
 export default userRoute;

@@ -39,7 +39,7 @@ export const useLogin = () => {
           password
         }).then(s => {
           setLogging(false);
-          dispatch(setUser(s.user))
+          dispatch(setUser(s.data))
           navigate("/home");
         }).catch(error => {
           setLogging(false);

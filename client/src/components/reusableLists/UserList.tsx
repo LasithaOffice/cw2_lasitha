@@ -5,10 +5,12 @@ import DropDown from '../ui/single/DropDown'
 import { userTypes, type UserTypes } from '../../types/User'
 import { getAllUsers } from '../../api/user'
 import { type User } from '../../interfaces/User'
+import { capitalizeFirst } from '../../utils/stringFunc'
 
 type Props = {
   reloadKey?: number,
-  setUser?: (v: string[]) => void
+  initUserType?: UserTypes,
+  setUser?: (v: User) => void
 }
 
 const UserList = (p: Props) => {
@@ -20,9 +22,10 @@ const UserList = (p: Props) => {
   const getAllUsers_ = async () => {
     setLoading(true);
     const dt = await getAllUsers({
-      userType: selectedType
+      userType: (p.initUserType) ? p.initUserType : selectedType
     })
-    setUsers(dt.list)
+    console.log("dt.list", dt.data)
+    setUsers(dt.data)
     setLoading(false);
   }
 
@@ -32,11 +35,14 @@ const UserList = (p: Props) => {
 
   return (
     <div>
-      <Typography type='h2' mt={5}>User List</Typography>
+      <Typography type='h2' mt={5}>{p.initUserType ? `${capitalizeFirst(p.initUserType)} list` : 'User List'}</Typography>
       <div className='flex flex-row items-center  pt-5'>
-        <div className='w-40'>
-          <DropDown selected={selectedType} items={["All", ...userTypes]} title={'User Type'} setSelected={setSelectedType} />
-        </div>
+        {
+          !p.initUserType &&
+          <div className='w-40'>
+            <DropDown selected={selectedType} items={["All", ...userTypes]} title={'User Type'} setSelected={setSelectedType} />
+          </div>
+        }
         <div>
           {
             loading &&
@@ -44,7 +50,7 @@ const UserList = (p: Props) => {
           }
         </div>
       </div>
-      <Table setValue={p.setUser} mt={5} columns={["Name", "User Type", "Image"]} data={users.map(d => [d.name, d.userType, d.img])} />
+      <Table setValue={p.setUser} mt={5} columns={["Name", (p.initUserType == 'doctor') ? "Speciality" : "User Type", "Image"]} data={users.map(d => [d.name, (p.initUserType == 'doctor' ? d.speciality : d.userType), d.img])} allData={users} />
     </div>
   )
 }

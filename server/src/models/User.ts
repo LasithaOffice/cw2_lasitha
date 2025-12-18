@@ -1,12 +1,6 @@
 import mongoose from "mongoose";
-import { type UserType } from "../types/User.ts";
-const userTypes_: UserType[] = [
-  "admin",
-  "doctor",
-  "frontDesk",
-  "radiologist",
-  "accountant",
-];
+import { allSpecialities, userTypes } from "../types/User.ts";
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,7 +20,12 @@ const userSchema = new mongoose.Schema({
   },
   userType: {
     type: String,
-    enum: userTypes_,
+    enum: userTypes,
+    required: true
+  },
+  speciality: {
+    type: String,
+    enum: allSpecialities,
     required: true
   },
   isActive: {

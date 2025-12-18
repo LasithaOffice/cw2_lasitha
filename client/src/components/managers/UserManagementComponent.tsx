@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import TextInput from '../ui/single/TextInput'
 import DropDown from '../ui/single/DropDown'
-import { userTypes, type UserTypes } from '../../types/User'
+import { allSpecialities, userTypes, type Specialities, type UserTypes } from '../../types/User'
 import ImageUploader from '../ui/single/ImageUploader'
 import Button from '../ui/single/Button'
-import { useCreateAccount } from '../../reusableHooks/useCreateAccount'
 import UserList from '../reusableLists/UserList'
-import { type User } from '../../interfaces/User'
+import { enableOrDisableUser } from '../../api/user'
+import toast from 'react-hot-toast'
+import { useCreateUser } from '../../reusableHooks/useCreateUser'
+import type { User } from '../../interfaces/User'
 
 const UserManagementComponent = () => {
 
@@ -15,11 +17,12 @@ const UserManagementComponent = () => {
   const [userName, setUserName] = useState("");
   const [img, setImg] = useState("");
   const [ifile, setIFile] = useState<any>();
-  const [userType, setUserType] = useState<UserTypes | undefined>();
+  const [userType, setUserType] = useState<UserTypes>('admin');
+  const [speciality, setSpeciality] = useState<Specialities>('Staff');
 
-  const { create, loading } = useCreateAccount();
+  const { create, loading } = useCreateUser();
 
-  const [currentUser, setCurrentUser] = useState<string[]>([]);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   const [triggerUserList, setTriggerUserList] = useState(0);
 
@@ -29,23 +32,48 @@ const UserManagementComponent = () => {
       setPassword("");
       setUserName("");
       setIFile(undefined);
-      setUserType(undefined)
+      setUserType('admin')
+      setSpeciality('Staff')
     }
   }, [loading])
 
   useEffect(() => {
-    if (currentUser.length > 0) {
-      setName(currentUser[0]);
-      setImg(currentUser[2]);
-      setUserType(currentUser[1] as UserTypes)
+    if (currentUser) {
+      setName(currentUser.name);
+      setUserType(currentUser.userType)
+      setImg(currentUser.img);
+      setSpeciality(currentUser.speciality)
     } else {
       setName("");
       setPassword("");
       setUserName("");
       setIFile(undefined);
-      setUserType(undefined)
+      setUserType('admin')
+      setSpeciality('Staff')
     }
   }, [currentUser])
+
+  const [disabling, setDisabling] = useState(false);
+
+  const enableOrDisableUser_ = useCallback(async () => {
+    try {
+      setDisabling(true);
+      const dt = await enableOrDisableUser(currentUser?._id + "")
+      toast.success(dt.message)
+      setTriggerUserList(d => d + 1)
+      setDisabling(false);
+    } catch (error: any) {
+      toast.error(error.response.data.message)
+      setDisabling(false);
+    }
+  }, [currentUser])
+
+  const createUser = useCallback(async () => {
+    const success = await create(name, userName, password, userType, speciality, ifile);
+    if (success) {
+      setTriggerUserList(d => d + 1)
+    }
+  }, [name, userName, password, userType, ifile])
 
   return (
     <div>
@@ -59,29 +87,24 @@ const UserManagementComponent = () => {
           <TextInput title={'Password'} mt={2} placeHolder={'type the password'} type={'password'} text={password}
             setText={setPassword} />
           <DropDown selected={userType} items={userTypes} title={'User Type'} setSelected={setUserType} />
+          {
+            (userType == 'doctor') &&
+            <DropDown selected={speciality} items={allSpecialities} title={'Speciality'} setSelected={setSpeciality} />
+          }
           <ImageUploader setFile={(p) => {
             setIFile(p)
           }} img={img} />
           {
-            (currentUser.length > 0) ?
-              <div>
-                <Button type='cancel' text={'Disable Account'} mt={5} onClick={async () => {
-                  const success = await create(name, userName, password, userType, ifile);
-                  if (success) {
-                    setTriggerUserList(d => d + 1)
-                  }
-                }} loading={loading == 1} />
-                <Button text={'Cancel'} mt={5} onClick={() => {
-                  setCurrentUser([])
-                }} />
+            (currentUser) ?
+              <div className='flex'>
+                <Button type={currentUser.isActive ? 'cancel' : undefined}
+                  text={currentUser.isActive ? 'Disable Account' : 'Enable Account'}
+                  mt={5} onClick={enableOrDisableUser_} loading={disabling} />
+                <div className='w-2'></div>
+                <Button type='nutral' text={'Cancel'} mt={5} onClick={() => { setCurrentUser(undefined) }} />
               </div>
               :
-              <Button text={'Create Account'} mt={5} onClick={async () => {
-                const success = await create(name, userName, password, userType, ifile);
-                if (success) {
-                  setTriggerUserList(d => d + 1)
-                }
-              }} loading={loading == 1} />
+              <Button text={'Create Account'} mt={5} onClick={createUser} loading={loading == 1} />
           }
           <div className='h-20'></div>
         </div>

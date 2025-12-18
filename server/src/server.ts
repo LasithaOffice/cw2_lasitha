@@ -1,11 +1,11 @@
 import express from 'express'
 import { connectDB } from './config/db.ts'
 import dotenv from 'dotenv'
-import notesRoute from './routes/notesRoutes.ts';
 import cors from 'cors'
 import authRoute from './routes/authRoutes.ts';
 import uploadRoute from './routes/uploadRoutes.ts';
 import userRoute from './routes/userRoutes.ts';
+import patientRoute from './routes/patientRoutes.ts';
 
 dotenv.config();
 
@@ -24,10 +24,10 @@ app.use(cors({
 // })
 
 //Routing
-app.use("/api/notes", notesRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/upload", uploadRoute);
 app.use("/api/user", userRoute);
+app.use("/api/patient", patientRoute);
 
 connectDB().then(() => {
   app.listen(PORT, () => {

@@ -1,28 +1,32 @@
+import Patient from "../models/Patient.ts";
 import User from "../models/User.ts";
-import bcrypt from "bcrypt";
 
-export async function loadUsers(req, res) {
+export async function loadPatients(req, res) {
   try {
-    const { userType } = req.query;
-    let users = undefined;
-    if (userType == 'All') {
-      users = await User.find()
+    const { searchQuery } = req.query;
+    let patients = undefined;
+    if (searchQuery) {
+      patients = await Patient.find({
+        name: {
+          $regex: searchQuery, $options: "i"
+        }
+      })
     } else {
-      users = await User.find({ userType })
+      patients = await Patient.find()
     }
-    if (!users) {
+    if (!patients) {
       res.status(400).json({
-        message: "Error getting users"
+        message: "Error getting patients"
       })
       return;
     }
     res.status(200).json({
       message: "Fetched successfully",
-      list: users,
+      data: patients,
       success: true
     })
   } catch (error) {
-    console.log("Error getting notes", error);
+    console.log("Error getting patients", error);
     res.status(500).json({
       message: "Internal server error",
       success: false,
@@ -31,22 +35,23 @@ export async function loadUsers(req, res) {
   }
 }
 
-export async function createUser(req, res) {
+export async function createPatient(req, res) {
   try {
-    const { userName, password, name, img, userType, speciality } = req.body;
-    const password_ = await bcrypt.hash(password, 10);
-    const newUser = new User({
-      userName,
-      password: password_,
+    const { name, gender, address, tele, bDay, img } = req.body;
+    const count = await Patient.countDocuments();
+    const newPatient = new Patient({
+      patientId: (count + 1000000),
       name,
+      gender,
+      address,
+      tele,
+      bDay,
       img,
-      userType,
-      speciality
     })
-    await newUser.save()
-    res.status(201).json({ message: "User Account is created" })
+    await newPatient.save()
+    res.status(201).json({ message: "Patient is created" })
   } catch (error) {
-    console.log("Error getting notes", error);
+    console.log("Error creating Patient", error);
     res.status(500).json({
       message: "Internal server error",
       error: error
