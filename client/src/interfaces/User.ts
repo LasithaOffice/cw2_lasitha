@@ -1,4 +1,5 @@
-import type { Specialities, UserTypes } from "../types/User";
+import type { UserTypes } from "../types/User";
+import type { Speciality } from "./Speciality";
 
 export interface User {
   _id: string,
@@ -6,6 +7,6 @@ export interface User {
   img: string,
   userName: string
   userType: UserTypes
-  speciality: Specialities
+  speciality: Speciality
   isActive: boolean
 }

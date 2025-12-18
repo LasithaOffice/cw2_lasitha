@@ -50,7 +50,7 @@ const UserList = (p: Props) => {
           }
         </div>
       </div>
-      <Table setValue={p.setUser} mt={5} columns={["Name", (p.initUserType == 'doctor') ? "Speciality" : "User Type", "Image"]} data={users.map(d => [d.name, (p.initUserType == 'doctor' ? d.speciality : d.userType), d.img])} allData={users} />
+      <Table setValue={p.setUser} mt={5} columns={["Name", (p.initUserType == 'doctor') ? "Speciality" : "User Type", "Image"]} data={users.map(d => [d.name, (p.initUserType == 'doctor' ? d.speciality.name : d.userType), d.img])} allData={users} />
     </div>
   )
 }

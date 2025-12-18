@@ -20,6 +20,8 @@ const MenuButton = (p: Props) => {
       dispatch(setSection('Manage System Users'))
     } else if (user?.userType == 'frontDesk') {
       dispatch(setSection('Manage Patients'))
+    } else if (user?.userType == 'accountant') {
+      dispatch(setSection('Manage Payments'))
     }
   }, [user])
 

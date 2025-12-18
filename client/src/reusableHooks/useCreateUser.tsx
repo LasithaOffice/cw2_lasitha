@@ -1,19 +1,17 @@
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
-import type { Specialities, UserTypes } from '../types/User';
+import type { UserTypes } from '../types/User';
 import { uploadImage } from '../api/file';
 import { createUser } from '../api/user';
+import type { Speciality } from '../interfaces/Speciality';
 
 export const useCreateUser = () => {
 
   const [loading, setLoading] = useState(0);
 
   const create = useCallback(async (fullName: string, userName: string, password: string,
-    userType: UserTypes, speciality: Specialities, iFile?: any) => {
-    if (!speciality) {
-      speciality = 'Staff'
-    }
-    if (!(fullName && userName && password && userType && speciality && iFile)) {
+    userType: UserTypes, speciality?: Speciality, iFile?: any) => {
+    if (!(fullName && userName && password && userType && iFile)) {
       toast.error("Please provide all the details!")
       return false;
     }

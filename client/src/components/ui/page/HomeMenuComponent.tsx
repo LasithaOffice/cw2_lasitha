@@ -11,6 +11,13 @@ const HomeMenuComponent = () => {
     <div className="flex flex-col bg-base-200 h-dvh">
       <UserDataComponent />
       {
+        user?.userType == 'admin' &&
+        <div className="px-5 flex flex-col">
+          <MenuButton title={"Manage System Users"} />
+          <MenuButton title={"Manage Pricing"} />
+        </div>
+      }
+      {
         user?.userType == 'frontDesk' &&
         <div className="px-5 flex flex-col">
           <MenuButton title={"Manage Patients"} />
@@ -18,10 +25,9 @@ const HomeMenuComponent = () => {
         </div>
       }
       {
-        user?.userType == 'admin' &&
+        user?.userType == 'accountant' &&
         <div className="px-5 flex flex-col">
-          <MenuButton title={"Manage System Users"} />
-          <MenuButton title={"Manage Reports"} />
+          <MenuButton title={"Manage Payments"} />
         </div>
       }
     </div>

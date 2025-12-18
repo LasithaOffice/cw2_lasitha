@@ -1,5 +1,7 @@
 import ChannelManagementComponent from '../components/managers/ChannelManagementComponent'
 import PatientManagementComponent from '../components/managers/PatientManagementComponent'
+import PaymentManagementComponent from '../components/managers/PaymentManagementComponent copy'
+import PriceManagementComponent from '../components/managers/PriceManagementComponent'
 import UserManagementComponent from '../components/managers/UserManagementComponent'
 import HomeMenuComponent from '../components/ui/page/HomeMenuComponent'
 import NavBar from '../components/ui/page/NavBar'
@@ -26,7 +28,13 @@ const HomePage = () => {
                 section == 'Manage Channels' ?
                   <ChannelManagementComponent />
                   :
-                  <></>
+                  section == 'Manage Payments' ?
+                    <PaymentManagementComponent />
+                    :
+                    section == 'Manage Pricing' ?
+                      <PriceManagementComponent />
+                      :
+                      <></>
           }
         </div>
       </div>

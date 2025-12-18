@@ -7,6 +7,7 @@ import uploadRoute from './routes/uploadRoutes.ts';
 import userRoute from './routes/userRoutes.ts';
 import patientRoute from './routes/patientRoutes.ts';
 import channelRoute from './routes/channelRoutes.ts';
+import systemDataRoute from './routes/systemDataRoutes.ts';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use("/api/upload", uploadRoute);
 app.use("/api/user", userRoute);
 app.use("/api/patient", patientRoute);
 app.use("/api/channel", channelRoute);
+app.use("/api/data", systemDataRoute);
 
 connectDB().then(() => {
   app.listen(PORT, () => {

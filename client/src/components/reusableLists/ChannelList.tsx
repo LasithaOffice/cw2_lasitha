@@ -10,7 +10,7 @@ import type { Patient } from '../../interfaces/Patient'
 
 type Props = {
   reloadKey?: number,
-  // initUserType?: UserTypes,
+  noScanStatus?: boolean
   setChannel?: (v: Channel) => void
 }
 
@@ -54,6 +54,7 @@ const ChannelList = (p: Props) => {
           </div>
         }
         {
+          (!p.noScanStatus) &&
           <div className='pr-2 flex flex-1'>
             <DropDown selected={scanStatus} items={["All", ...allScanStatus]} title={'Scan Status'} setSelected={setScanStatus} />
           </div>

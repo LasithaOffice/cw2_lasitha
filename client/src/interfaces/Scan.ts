@@ -1,9 +1,10 @@
-import type { DiseaseTypes, ScanTypes } from "../types/Scan";
+import type { Disease } from "./Disease";
+import type { ScanType } from "./ScanType";
 
 export interface Scan {
   _id: string,
-  type: ScanTypes,
-  diseas: DiseaseTypes,
+  type: ScanType,
+  diseas: Disease,
   scanImages: string[],
   isCompleted: boolean,
 }

@@ -52,7 +52,7 @@ export async function getAllChannel(req, res) {
 
   if (doctorId) filter.doctor = doctorId;
   if (patientId) filter.patient = patientId;
-  if (channelStatus && channelStatus != 'All') filter.status = channelStatus;
+  if (channelStatus && channelStatus != 'All') filter.channelStatus = channelStatus;
   if (scanStatus && scanStatus != 'All') filter.scanStatus = scanStatus;
 
   if (date) {
