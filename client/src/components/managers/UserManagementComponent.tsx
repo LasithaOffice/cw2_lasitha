@@ -87,7 +87,7 @@ const UserManagementComponent = () => {
 
   return (
     <div>
-      <h1 className='text-4xl'>Manage System Users</h1>
+      <h1 className='text-4xl'>Manage System Users </h1>
       <div className='flex'>
         <div className='flex flex-1 flex-col'>
           <TextInput title={'Full Name'} mt={5} placeHolder={'type the name'} type={'text'} text={name}
