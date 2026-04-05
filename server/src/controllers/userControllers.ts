@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export async function getAllUsers(req, res) {
   try {
     const { userType } = req.query;
-    let users = undefined;
+    let users;
     if (userType == 'All') {
       users = await User.find().populate('speciality')
     } else {

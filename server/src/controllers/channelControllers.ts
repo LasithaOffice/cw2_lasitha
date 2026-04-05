@@ -92,14 +92,18 @@ export async function updateChannel(req, res) {
   try {
     const { diagnosis, prescriptions, condition, id, scanRequestId, channelStatus, scanStatus } = req.body;
     const ch = await Channel.findById(id);
-    if (diagnosis) ch.diagnosis = diagnosis;
-    if (prescriptions) ch.prescriptions = prescriptions;
-    if (condition) ch.condition = condition;
-    if (scanRequestId) ch.scanRequest = scanRequestId;
-    if (channelStatus) ch.channelStatus = channelStatus;
-    if (scanStatus) ch.scanStatus = scanStatus;
-    ch.save();
-    res.status(200).json({ message: "Channel is updated" })
+    if (ch) {
+      if (diagnosis) ch.diagnosis = diagnosis;
+      if (prescriptions) ch.prescriptions = prescriptions;
+      if (condition) ch.condition = condition;
+      if (scanRequestId) ch.scanRequest = scanRequestId;
+      if (channelStatus) ch.channelStatus = channelStatus;
+      if (scanStatus) ch.scanStatus = scanStatus;
+      ch.save();
+      res.status(200).json({ message: "Channel is updated" })
+    } else {
+      res.status(404).json({ message: "Channel not found" })
+    }
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",

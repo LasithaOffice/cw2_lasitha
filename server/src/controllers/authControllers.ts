@@ -22,15 +22,12 @@ export async function signin(req, res) {
       return;
     }
     const userObj = user.toObject();
-    delete userObj.password
-    delete userObj.__v
-    delete userObj.createdAt
-    delete userObj.updatedAt
+    const { password: pw, createdAt, updatedAt, ...safeUser } = userObj;
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       res.status(200).json({
         message: "Fetched successfully",
-        data: userObj,
+        data: safeUser,
         success: true
       })
     } else {

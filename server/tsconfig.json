@@ -3,6 +3,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "module": "NodeNext",
+    "noImplicitAny": false,
     "moduleResolution": "NodeNext",
     "target": "ES2020",
     "typeRoots": [

@@ -4,7 +4,7 @@ import User from "../models/User.ts";
 export async function loadPatients(req, res) {
   try {
     const { searchQuery } = req.query;
-    let patients = undefined;
+    let patients;
     if (searchQuery) {
       patients = await Patient.find({
         name: {
